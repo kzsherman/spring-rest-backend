@@ -9,10 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import sun.security.util.SecurityConstants;
 
 @EnableWebSecurity
-public class WebSecurity extends WebSecurityConfigurerAdapter {
+public class  WebSecurity extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -27,9 +26,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
        // super.configure(http);
 
         http.csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/users")
+                .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
                 .permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and().addFilter(new AuthenticationFilter(authenticationManager()));
     }
 
     @Override
