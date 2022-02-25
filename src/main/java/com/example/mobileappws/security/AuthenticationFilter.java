@@ -1,5 +1,6 @@
 package com.example.mobileappws.security;
 
+import com.example.mobileappws.SpringApplicationContext;
 import com.example.mobileappws.service.UserService;
 import com.example.mobileappws.shared.dto.UserDto;
 import com.example.mobileappws.ui.model.request.UserLoginRequestModel;
@@ -68,8 +69,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
      //   UserService userService = (UserService)SpringApplicationContext.getBean("userServiceImpl");
      //   UserDto userDto = userService.getUser(userName);
 
+        UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImp");
+        UserDto userDto = userService.getUser(userName);
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
       //  res.addHeader("UserID", userDto.getUserId());
+        res.addHeader("UserId", userDto.getUserId());
 
     }
 

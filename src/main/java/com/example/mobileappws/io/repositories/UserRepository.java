@@ -1,4 +1,4 @@
-package com.example.mobileappws;
+package com.example.mobileappws.io.repositories;
 
 import com.example.mobileappws.io.entity.UserEntity;
 import org.apache.catalina.User;
