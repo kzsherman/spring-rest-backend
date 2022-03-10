@@ -4,8 +4,7 @@ import com.example.mobileappws.exceptions.UserServiceException;
 import com.example.mobileappws.service.UserService;
 import com.example.mobileappws.shared.dto.UserDto;
 import com.example.mobileappws.ui.model.request.UserDetailsRequestModel;
-import com.example.mobileappws.ui.model.response.ErrorMessages;
-import com.example.mobileappws.ui.model.response.UserRest;
+import com.example.mobileappws.ui.model.response.*;
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +63,15 @@ public class UserController {
         return updatedUser;
     }
 
-    @DeleteMapping
-    public String deleteUser(){
-        return "delete user was called";
+    @DeleteMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE ,
+            MediaType.APPLICATION_JSON_VALUE })
+    public OperationStatusModel deleteUser(@PathVariable String id){
+
+        OperationStatusModel operationStatus = new OperationStatusModel();
+        operationStatus.setOperationName(RequestOperationName.DELETE.name());
+        userService.deleteUser(id);
+        operationStatus.setOpreationResult(RequestOperationStatus.SUCCESS.name());
+        return operationStatus;
     }
 
 }
