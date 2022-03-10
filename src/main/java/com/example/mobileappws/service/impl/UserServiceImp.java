@@ -5,6 +5,7 @@ import com.example.mobileappws.io.entity.UserEntity;
 import com.example.mobileappws.service.UserService;
 import com.example.mobileappws.shared.Utils;
 import com.example.mobileappws.shared.dto.UserDto;
+import com.example.mobileappws.ui.model.response.ErrorMessages;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -79,6 +80,21 @@ public class UserServiceImp implements UserService {
         UserEntity userEntity = userRepository.findByUserId(userId);
         if(userEntity == null) throw new UsernameNotFoundException(userId);
         BeanUtils.copyProperties(userEntity, returnUser);
+        return returnUser;
+    }
+
+    @Override
+    public UserDto updateUser(String userId, UserDto userDto) {
+        UserDto returnUser = new UserDto();
+        UserEntity userEntity = userRepository.findByUserId(userId);
+        if(userEntity == null) throw new UsernameNotFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage() + userId);
+
+        userEntity.setFirstName(userDto.getFirstName());
+        userEntity.setLastName(userDto.getLastName());
+
+        UserEntity updateUserDetails = userRepository.save(userEntity);
+        BeanUtils.copyProperties(updateUserDetails, returnUser);
+
         return returnUser;
     }
 }
